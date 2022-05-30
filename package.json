@@ -9,6 +9,7 @@
         "JSONPath": "^0.11.2"
     },
     "scripts": {
-        "postinstall": "node ./dependency/copy.js"
+        "postinstall": "node ./dependency/copy.js",
+        "start": "npx run node.main.js"
     }
 }
