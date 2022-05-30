@@ -22,20 +22,21 @@ let getTokenFromThird = async (identityFunction) => {
     request.body = {};
     const result = client.invokeFunction(request);
     let res = await result
+    return res
     //将res 放到redis中，设置过期时间为15分钟
 }
 
 // redis
-//key: @apiServiceToken
+// key: @apiServiceToken
 // {
-// 'kechengyun':'ysuyfshfjw889w9ew5e656278902y3tegh',
+// @identityFunction:'ysuyfshfjw889w9ew5e656278902y3tegh',
 // "aikecheng" : "dkfkdjfksdjfksjeurwoeuroeorwepwpeor",
 // }
 
-let getToken = async (event, context, identityFunction) => {
+let getToken = async (event, context,identityFunction) => {
     //从redis中取token，key为identityFunction   如取不到，则重新调用getTokenFromThird接口 然后再从redis中取 
-    await getTokenFromThird(identityFunction)
-    let token = ''
+   let token = await getTokenFromThird(identityFunction)
+    console.log(token)
     return token
 }
 

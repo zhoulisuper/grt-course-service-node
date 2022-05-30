@@ -19,5 +19,15 @@ exports.handler = async (event, context, callback) => {
     //根据配置对出参进行转化
     let outData = await switchMoudle.getResult(outParams, config.outParams)
     //返回标准数据给业务方
-    callback(null, token)
+     const output =
+    {
+        'statusCode': 200,
+        'headers':
+        {
+            'Content-Type': 'application/json'
+        },
+        'isBase64Encoded': false,
+        'body': JSON.stringify(token),
+    }
+    callback(null, output)
 }
