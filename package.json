@@ -1,0 +1,14 @@
+{
+    "name": "function",
+    "version": "0.0.1",
+    "description": "测试",
+    "displayName": "function-ide",
+    "dependencies": {
+        "@huaweicloud/huaweicloud-sdk-core": "^3.0.39-rc",
+        "@huaweicloud/huaweicloud-sdk-functiongraph": "^3.0.39-rc",
+        "JSONPath": "^0.11.2"
+    },
+    "scripts": {
+        "postinstall": "node ./dependency/copy.js"
+    }
+}
