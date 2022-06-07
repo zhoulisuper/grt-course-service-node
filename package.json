@@ -6,7 +6,10 @@
     "dependencies": {
         "@huaweicloud/huaweicloud-sdk-core": "^3.0.39-rc",
         "@huaweicloud/huaweicloud-sdk-functiongraph": "^3.0.39-rc",
-        "JSONPath": "^0.11.2"
+        "ioredis": "^5.0.6",
+        "js-base64": "^3.7.2",
+        "JSONPath": "^0.11.2",
+        "request": "^2.88.2"
     },
     "scripts": {
         "postinstall": "node ./dependency/copy.js",

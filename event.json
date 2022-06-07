@@ -1,7 +1,8 @@
 {
-    "body": "",
+    "body": "eyJjb3Vyc2VLZXkiOiJyWm9hNjN1bUxBdTZmRE9aZlpWIn0=",
     "requestContext": {
-        "apiId": "bc1dcffd-aa35-474d-897c-d53425a4c08e",
+        "apiId": "6e0614a564a04b1983c67d9d1af34762",
+
         "requestId": "11cdcdcf33949dc6d722640a13091c77",
         "stage": "RELEASE"
     },
@@ -9,10 +10,7 @@
         "responseType": "html"
     },
     "httpMethod": "GET",
-    "pathParameters": {
- "user": "zhouli",
-        "courseId": "1212",
-        "content": "xxxxxx"},
+    "pathParameters": {},
     "headers": {
         "accept-language": "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2",
         "accept-encoding": "gzip, deflate, br",
@@ -27,6 +25,6 @@
         "x-real-ip": "103.218.216.98",
         "user-agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0"
     },
-    "path": "/apig-event-template",
+    "path": "/kechengyun/list",
     "isBase64Encoded": true
 }
