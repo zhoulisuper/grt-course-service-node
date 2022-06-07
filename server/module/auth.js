@@ -1,11 +1,11 @@
-let getTokenFromThird = async (identityFunction) => {
+const getTokenFromThird = async (funUrn, apiID) => {
   const core = require('@huaweicloud/huaweicloud-sdk-core')
   const functiongraph = require('@huaweicloud/huaweicloud-sdk-functiongraph')
 
-  const ak = '11E1LOKXCBPLMQNGFWZP'
-  const sk = 'IzheluIBfJOjU07XGtjLBASdxjsP2lydK7JpjJim'
+  const ak = '2GGZ7Y2LKYLCLSGSSPUC'
+  const sk = 'sbyUeO9JSdQhJGSUGI9kTiAFOUJOdAYU5sbq0eee'
   const endpoint = 'https://functiongraph.cn-north-4.myhuaweicloud.com'
-  const project_id = 'd11b297285b647a69fdd7fb549146d15'
+  const project_id = '0e280f3aa900f5d12f7ac01cefbddf0f'
 
   const credentials = new core.BasicCredentials()
     .withAk(ak)
@@ -16,28 +16,23 @@ let getTokenFromThird = async (identityFunction) => {
     .withEndpoint(endpoint)
     .build()
   const request = new functiongraph.InvokeFunctionRequest()
-  request.functionUrn = identityFunction
+  request.functionUrn = funUrn
   request.body = {}
-  const result = client.invokeFunction(request)
-  let res = await result
-  return res
-  //将res 放到redis中，设置过期时间为15分钟
-}
-
-// redis
-// key: @apiServiceToken
-// {
-// @identityFunction:'ysuyfshfjw889w9ew5e656278902y3tegh',
-// "aikecheng" : "dkfkdjfksdjfksjeurwoeuroeorwepwpeor",
-// }
-
-let getToken = async (identityFunction) => {
-  //从redis中取token，key为identityFunction   如取不到，则重新调用getTokenFromThird接口 然后再从redis中取
-  let token = await getTokenFromThird(identityFunction)
-  // console.log(token)
-  return token
+  let res = await client.invokeFunction(request)
+  if (res.success) {
+    global.redisClient.set(`${apiID}_token`, res.data)
+    global.redisClient.expire(`${apiID}_token`, 15 * 60)
+    return res.data
+  }
+  return '鉴权函数调用失败'
 }
 
 module.exports = {
-  getToken: getToken,
+  getToken: async (funUrn, apiID) => {
+    let token = await global.redisClient.get(`${apiID}_token`)
+    if (!token) {
+      token = await getTokenFromThird(funUrn, apiID)
+    }
+    return token
+  },
 }

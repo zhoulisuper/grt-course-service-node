@@ -3,6 +3,8 @@ let configModule = require('./server/module/getConfig.js')
 let switchMoudle = require('./server/module/switch.js')
 let httpMoudle = require('./server/module/http.js')
 var redis = require('./server/util/redis')
+
+var resultModule = require('./server/util/result')
 let Base64 = require('js-base64')
 
 function getParams(event) {
@@ -17,40 +19,28 @@ function getParams(event) {
 
 exports.handler = async (event, context) => {
   await redis.install(context)
-  //第一步，取apiID
-  let apiID = event.requestContext.apiId
-  //第二步，通过apiID配置文件
-  const config = await configModule.getConfig(apiID)
-  let identityFunction = config.identityFunction
+  //取apiID
+  const apiID = event.requestContext.apiId
+  //通过apiID配置文件
+  const config = await configModule(apiID)
   //根据配置文件，调用对应的身份认证函数。得到token
-  const token = await identityModule.getToken(identityFunction)
-
+  const token = await identityModule.getToken(config.identityFunction, apiID)
   //根据配置对入参进行转化
-  let enterParams = getParams(event)
-  let thirdPartyEnterParams = await switchMoudle.getResult(
+  const enterParams = getParams(event)
+  const thirdPartyEnterParams = await switchMoudle.getResult(
     enterParams,
     config.enterParamMapping
   )
-  //拿到token和参数，发起请求
-  let thirdPartyResult = await httpMoudle.request(
+  //发起请求
+  const thirdPartyResult = await httpMoudle(
     token,
     thirdPartyEnterParams,
     config
   )
-
-  // //根据配置对出参进行转化
-  // let standardResult = await switchMoudle.getResult(
-  //   thirdPartyResult,
-  //   config.outParamMapping
-  // )
-  //返回标准数据给业务方
-  const output = {
-    statusCode: 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    isBase64Encoded: false,
-    body: JSON.stringify(token),
-  }
-  return output
+  //根据配置对出参进行转化
+  const standardResult = await switchMoudle.getResult(
+    JSON.parse(thirdPartyResult),
+    config.outParamMapping
+  )
+  return resultModule.success(standardResult)
 }
