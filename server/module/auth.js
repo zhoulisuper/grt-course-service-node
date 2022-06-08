@@ -35,9 +35,9 @@ const getTokenFromThird = async (funUrn, apiID) => {
 module.exports = {
   get: async (funUrn, apiID) => {
     let authInfo = await global.redisClient.get(`${apiID}_token`)
-    if (!authInfo) {
-      return await getTokenFromThird(funUrn, apiID)
+    if (authInfo) {
+      return JSON.parse(authInfo)
     }
-    return JSON.parse(authInfo)
+    return await getTokenFromThird(funUrn, apiID)
   },
 }

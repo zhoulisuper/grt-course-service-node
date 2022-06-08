@@ -58,7 +58,7 @@ const get = async (obj, mapRelation) => {
 }
 
 module.exports = {
-  formulaList: null, //公式列表
+  formulaList: null,
   formulaSwitch,
   get,
 }

@@ -5,7 +5,7 @@
  */
 const request = require('request')
 
-function post(url, data, isJson = true) {
+function post(url, data) {
   let options = {
     url,
     method: 'POST',

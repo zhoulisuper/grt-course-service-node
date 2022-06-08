@@ -20,7 +20,7 @@ const Entrance = {
     const RelationSwitch = require('./server/module/RelationSwitch')
     const Http = require('./server/module/Http.js')
     const ResultModule = require('./server/util/result')
-    //取apiID
+
     const apiID = event.requestContext.apiId
     //通过apiID配置文件
     const config = await Config(apiID)

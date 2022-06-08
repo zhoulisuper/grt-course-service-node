@@ -4,7 +4,6 @@
  * @Date: 2022-6-7
  */
 module.exports = async (apiID) => {
-  //apiID 从redis 中得到config配置
   let res = await global.redisClient.hgetall(apiID)
   return {
     enterParamMapping: JSON.parse(JSON.parse(res.enterParams)),
