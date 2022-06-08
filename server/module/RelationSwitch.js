@@ -35,7 +35,10 @@ const formulaSwitch = (relation, obj) => {
     let formulaFUN = JSON.parse(this.formulaList[function_name])
     let function_arguments = formulaFUN.match(/\((\S*)\)/)[1]
     let function_body = formulaFUN.match(/(?<=\{)(.|\n|\r)*(?=\})/)[0]
-    global[function_name] = new Function(function_arguments, function_body)
+    global[`fun_${function_name}`] = new Function(
+      function_arguments,
+      function_body
+    )
     let argsRelation = relation.match(/\((\S*)\)/)[1].split(',')
     let args = []
     argsRelation.forEach((item, index) => {
@@ -45,7 +48,7 @@ const formulaSwitch = (relation, obj) => {
         args[index] = item
       }
     })
-    return global[function_name](...args)
+    return global[`fun_${function_name}`](...args)
   } catch (err) {
     return '自定义函数解析异常'
   }
