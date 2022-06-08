@@ -1,10 +1,7 @@
 /*
- * @Author: Bing Xu
- * @Date: 2020-03-30 10:06:10
- * @LastEditTime: 2020-03-30 11:04:35
- * @LastEditors: Bing Xu
- * @Description:
- * @FilePath: /ad-api-nodejs/utils/request.js
+ * @Description: 异步请求简单封装
+ * @Author: 周丽
+ * @Date: 2022-6-7
  */
 const request = require('request')
 

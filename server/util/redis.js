@@ -1,3 +1,8 @@
+/*
+ * @Description: redis 配置模块
+ * @Author: 周丽
+ * @Date: 2022-6-7
+ */
 const Redis = require('ioredis')
 const path = require('path')
 

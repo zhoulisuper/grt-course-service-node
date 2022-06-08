@@ -1,5 +1,10 @@
-const JSONPath = require('JSONPath')
+/*
+ * @Description: 出入参数转换模块
+ * @Author: 周丽
+ * @Date: 2022-6-7
+ */
 
+const JSONPath = require('JSONPath')
 const jsonSwitch = (relation, obj) => {
   let res = null
   JSONPath({
@@ -16,7 +21,6 @@ const formulaSwitch = (relation, obj) => {
   //获取函数名
   let function_name = relation.match(/fun_(\S*)\(/)[1]
   let formulaFUN = JSON.parse(this.formulaList[function_name])
-
   //获取函数声明参数
   let function_arguments = formulaFUN.match(/\((\S*)\)/)[1]
   //获取函数声明体

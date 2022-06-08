@@ -1,3 +1,8 @@
+/*
+ * @Description: 返回结果模版
+ * @Author: 周丽
+ * @Date: 2022-6-7
+ */
 const output = {
   success: function (res) {
     return {

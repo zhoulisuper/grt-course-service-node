@@ -1,3 +1,8 @@
+/*
+ * @Description: 接口认证模块
+ * @Author: 周丽
+ * @Date: 2022-6-7
+ */
 const getTokenFromThird = async (funUrn, apiID) => {
   const core = require('@huaweicloud/huaweicloud-sdk-core')
   const functiongraph = require('@huaweicloud/huaweicloud-sdk-functiongraph')

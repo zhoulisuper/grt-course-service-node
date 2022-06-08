@@ -1,7 +1,7 @@
 /*
- * @Description: 默认服务配置，预生产环境
+ * @Description: 默认服务配置
  * @Author: 周丽
- * @Date: 2022-5-20
+ * @Date: 2022-6-7
  */
 module.exports = {
   redis: {
