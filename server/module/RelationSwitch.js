@@ -36,7 +36,7 @@ const formulaSwitch = (relation, obj) => {
   return global[function_name](...args)
 }
 
-const getResult = async (obj, mapRelation) => {
+const get = async (obj, mapRelation) => {
   this.formulaList = await global.redisClient.hgetall('formulalist')
   let result = {}
   Object.keys(mapRelation).forEach((key) => {
@@ -50,12 +50,11 @@ const getResult = async (obj, mapRelation) => {
       result[key] = mapRelation[key]
     }
   })
-  console.log(result)
   return result
 }
 
 module.exports = {
   formulaList: null, //公式列表
-  getResult,
   formulaSwitch,
+  get,
 }
