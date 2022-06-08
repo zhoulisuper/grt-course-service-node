@@ -20,7 +20,7 @@ const getTokenFromThird = async (funUrn, apiID) => {
   request.body = {}
   let res = await client.invokeFunction(request)
   if (res.success) {
-    global.redisClient.set(`${apiID}_token`, res.data)
+    global.redisClient.set(`${apiID}_token`, JSON.stringify(res.data))
     global.redisClient.expire(`${apiID}_token`, 15 * 60)
     return res.data
   }
@@ -28,11 +28,11 @@ const getTokenFromThird = async (funUrn, apiID) => {
 }
 
 module.exports = {
-  getToken: async (funUrn, apiID) => {
-    let token = await global.redisClient.get(`${apiID}_token`)
-    if (!token) {
-      token = await getTokenFromThird(funUrn, apiID)
+  getAuth: async (funUrn, apiID) => {
+    let authInfo = await global.redisClient.get(`${apiID}_token`)
+    if (!authInfo) {
+      return await getTokenFromThird(funUrn, apiID)
     }
-    return token
+    return JSON.parse(authInfo)
   },
 }

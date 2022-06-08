@@ -23,8 +23,8 @@ exports.handler = async (event, context) => {
   const apiID = event.requestContext.apiId
   //通过apiID配置文件
   const config = await configModule(apiID)
-  //根据配置文件，调用对应的身份认证函数。得到token
-  const token = await identityModule.getToken(config.identityFunction, apiID)
+  //根据配置文件，调用对应的身份认证函数。得到authInfo
+  const authInfo = await identityModule.getAuth(config.identityFunction, apiID)
   //根据配置对入参进行转化
   const enterParams = getParams(event)
   const thirdPartyEnterParams = await switchMoudle.getResult(
@@ -33,7 +33,7 @@ exports.handler = async (event, context) => {
   )
   //发起请求
   const thirdPartyResult = await httpMoudle(
-    token,
+    authInfo,
     thirdPartyEnterParams,
     config
   )
