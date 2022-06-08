@@ -5,6 +5,10 @@
  */
 const Redis = require('ioredis')
 const path = require('path')
+/**
+ *
+ * @param {*} context 函数计算的context 对象
+ */
 
 const init = async function (context) {
   console.log('init')

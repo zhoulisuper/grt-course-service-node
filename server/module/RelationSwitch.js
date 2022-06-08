@@ -5,6 +5,12 @@
  */
 
 const JSONPath = require('JSONPath')
+/**
+ *
+ * @param {*} relation 复杂映射中定义jsonpath路径 $.xxxxx
+ * @param {*} obj 要解析的对象
+ * @returns
+ */
 const jsonSwitch = (relation, obj) => {
   let res = null
   JSONPath({
@@ -16,30 +22,40 @@ const jsonSwitch = (relation, obj) => {
   })
   return res
 }
+/**
+ *
+ * @param {*} relation  复杂映射中定义函数使用 fun_xxxxx
+ * @param {*} obj 要解析的对象
+ * @returns
+ */
 
 const formulaSwitch = (relation, obj) => {
-  //获取函数名
-  let function_name = relation.match(/fun_(\S*)\(/)[1]
-  let formulaFUN = JSON.parse(this.formulaList[function_name])
-  //获取函数声明参数
-  let function_arguments = formulaFUN.match(/\((\S*)\)/)[1]
-  //获取函数声明体
-  let function_body = formulaFUN.match(/\{((.|\n|\r)+?)\}/)[1]
-  //定义函数
-  global[function_name] = new Function(function_arguments, function_body)
-  //获取函数执行参数
-  let argsRelation = relation.match(/\((\S*)\)/)[1].split(',') //$.name,$.doms.name
-  let args = []
-  argsRelation.forEach((item, index) => {
-    if (item.match(/^\$.*/)) {
-      args[index] = jsonSwitch(item, obj)
-    } else {
-      args[index] = item
-    }
-  })
-  return global[function_name](...args)
+  try {
+    let function_name = relation.match(/fun_(\S*)\(/)[1]
+    let formulaFUN = JSON.parse(this.formulaList[function_name])
+    let function_arguments = formulaFUN.match(/\((\S*)\)/)[1]
+    let function_body = formulaFUN.match(/(?<=\{)(.|\n|\r)*(?=\})/)[0]
+    global[function_name] = new Function(function_arguments, function_body)
+    let argsRelation = relation.match(/\((\S*)\)/)[1].split(',')
+    let args = []
+    argsRelation.forEach((item, index) => {
+      if (item.match(/^\$.*/)) {
+        args[index] = jsonSwitch(item, obj)
+      } else {
+        args[index] = item
+      }
+    })
+    return global[function_name](...args)
+  } catch (err) {
+    return '自定义函数解析异常'
+  }
 }
-
+/**
+ *
+ * @param {*} obj 要解析的对象
+ * @param {*} mapRelation 复杂映射中定义 出入参映射关系map
+ * @returns
+ */
 const get = async (obj, mapRelation) => {
   this.formulaList = await global.redisClient.hgetall('formulalist')
   let result = {}
